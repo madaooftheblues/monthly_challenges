@@ -23,7 +23,7 @@ monthly_challenges = {
 def monthly_challenge(request, month):
     try:
         response = monthly_challenges[month]
-        return HttpResponse(response)
+        return render(request, "challenges/challenge.html", {"month": month, "challenge": response})
     except:
         return HttpResponseNotFound("Woops, month does not exits.")
 
@@ -40,13 +40,6 @@ def monthly_challenge_by_number(request, month):
 
 
 def get_months_list(request):
-    out = "<div>"
-    out += "<h1>Monthly Challenges</h1>"
-    out += "<ul>"
-    months_list = [f'<li><a href="{reverse("month-url", args=[month])}">{month}</a></li>' for month in list(
-        monthly_challenges.keys())]
-    out += "".join(months_list)
-    out += "</ul>"
-    out += "</div>"
+    months_list = list(monthly_challenges.keys())
 
-    return HttpResponse(out)
+    return render(request, "challenges/monthly-challenges.html", {"months_list": months_list})
